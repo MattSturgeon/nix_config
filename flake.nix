@@ -65,8 +65,8 @@
         in import ./shell.nix { inherit pkgs; }
       );
 
-      # NixOS kconfiguration entrypoint
-      # Available through `nixos-rebuild --flake .#matts-laptop`
+      # NixOS configuration entrypoint
+      # Available through `nixos-rebuild --flake .`
       nixosConfigurations = {
         "matts-laptop" = nixpkgs.lib.nixosSystem {
           specialArgs = { inherit inputs outputs; };
@@ -87,37 +87,43 @@
             # Main nixos configuration file
             ./nixos/configuration.nix
 	    ./hardware-config/matts-laptop.nix
+
+	    home-manager.nixosModules.home-manager
+	    {
+	      home-manager = {
+	        useGlobalPkgs = true;
+		useUserPackages = true;
+		users.matt = {...}: {
+		  imports = [
+	            ./home-manager/system.nix
+	            ./home-manager/java.nix
+	            ./home-manager/shell.nix
+	            ./home-manager/starship.nix
+	            ./home-manager/zellij.nix
+	            ./home-manager/gpg.nix
+	            ./home-manager/git.nix
+	            ./home-manager/fonts.nix
+	            ./home-manager/kitty.nix
+	            ./home-manager/neovim.nix
+	            ./home-manager/vscode.nix
+	            ./home-manager/firefox.nix
+
+                    # Main home-manager configuration file
+                    ./home-manager/home.nix
+
+	            # Use nixvim modules in this configuration
+	            nixvim.homeManagerModules.nixvim
+		  ];
+		};
+	      };
+	    }
           ];
         };
       };
 
       # Standalone home-manager configuration entrypoint
-      # Available through `home-manager --flake .#matt`
+      # Available through `home-manager --flake .#user@host`
       homeConfigurations = {
-        "matt@matts-laptop" = home-manager.lib.homeManagerConfiguration {
-          pkgs = pkgs.x86_64-linux;
-          extraSpecialArgs = { inherit inputs outputs; };
-          modules = [
-	    ./home-manager/system.nix
-	    ./home-manager/java.nix
-	    ./home-manager/shell.nix
-	    ./home-manager/starship.nix
-	    ./home-manager/zellij.nix
-	    ./home-manager/gpg.nix
-	    ./home-manager/git.nix
-	    ./home-manager/fonts.nix
-	    ./home-manager/kitty.nix
-	    ./home-manager/neovim.nix
-	    ./home-manager/vscode.nix
-	    ./home-manager/firefox.nix
-
-            # Main home-manager configuration file
-            ./home-manager/home.nix
-
-	    # Use nixvim modules in this configuration
-	    nixvim.homeManagerModules.nixvim
-          ];
-        };
         "matt@matts-desktop" = home-manager.lib.homeManagerConfiguration {
           pkgs = pkgs.x86_64-linux;
           extraSpecialArgs = { inherit inputs outputs; };

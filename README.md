@@ -13,3 +13,9 @@ Run `home-manager --flake .#matt` to install the user configuration.
 ## Updating
 
 TODO
+
+## TODO
+
+- Move modules to `modules` directory
+- Use module options to enable & configure modules
+- Define config and which modules are used in a host config file, instead of in `flake.nix`
