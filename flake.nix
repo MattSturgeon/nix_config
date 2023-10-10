@@ -31,21 +31,8 @@
         "aarch64-darwin"
         "x86_64-darwin"
       ];
-    in
-    rec {
-      # Devshell for bootstrapping
-      # Acessible through `nix develop` or `nix-shell` (legacy)
-      devShells = forAllSystems (system:
-        let pkgs = nixpkgs.legacyPackages.${system};
-        in import ./shell.nix { inherit pkgs; }
-      );
 
-      # Package overlays
-      overlays = {
-        nixgl = nixgl.overlays.default;
-      };
-
-      legacyPackages = forAllSystems (system:
+      pkgs = forAllSystems (system:
         import nixpkgs {
           inherit system;
           overlays = builtins.attrValues overlays;
@@ -53,7 +40,32 @@
         }
       );
 
-      # NixOS configuration entrypoint
+      lib = nixpkgs.lib.extend (final: prev: {
+	me = import ./lib {
+	  inherit inputs;
+	  lib = final;
+	};
+      });
+
+      # Package overlays
+      overlays = {
+        nixgl = nixgl.overlays.default;
+      };
+
+    in {
+      # Export overlays
+      inherit overlays;
+      legacyPackages = pkgs;
+      lib = lib.me;
+
+      # Devshell for bootstrapping
+      # Acessible through `nix develop` or `nix-shell` (legacy)
+      devShells = forAllSystems (system:
+        let pkgs = nixpkgs.legacyPackages.${system};
+        in import ./shell.nix { inherit pkgs; }
+      );
+
+      # NixOS kconfiguration entrypoint
       # Available through `nixos-rebuild --flake .#matts-laptop`
       nixosConfigurations = {
         "matts-laptop" = nixpkgs.lib.nixosSystem {
@@ -83,7 +95,7 @@
       # Available through `home-manager --flake .#matt`
       homeConfigurations = {
         "matt@matts-laptop" = home-manager.lib.homeManagerConfiguration {
-          pkgs = legacyPackages.x86_64-linux;
+          pkgs = pkgs.x86_64-linux;
           extraSpecialArgs = { inherit inputs outputs; };
           modules = [
 	    ./home-manager/system.nix
@@ -107,7 +119,7 @@
           ];
         };
         "matt@matts-desktop" = home-manager.lib.homeManagerConfiguration {
-          pkgs = legacyPackages.x86_64-linux;
+          pkgs = pkgs.x86_64-linux;
           extraSpecialArgs = { inherit inputs outputs; };
           modules = [
 	    ./home-manager/generic-distro.nix
