@@ -1,5 +1,8 @@
-{ config, pkgs, ... }: {
-
+{
+  config,
+  pkgs,
+  ...
+}: {
   programs = {
     # Git
     git = {
@@ -20,5 +23,4 @@
       settings.git_protocol = "ssh";
     };
   };
-
 }

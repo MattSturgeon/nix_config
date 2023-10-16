@@ -1,10 +1,17 @@
-{ inputs, outputs, lib, config, pkgs, ... }: {
+{
+  inputs,
+  outputs,
+  lib,
+  config,
+  pkgs,
+  ...
+}: {
   boot = {
     plymouth = {
       enable = true;
       theme = "breeze";
     };
-    kernelParams = [ "quiet" ];
+    kernelParams = ["quiet"];
     initrd.systemd.enable = true;
   };
 }

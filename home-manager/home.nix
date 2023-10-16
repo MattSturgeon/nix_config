@@ -1,6 +1,8 @@
-{ config, pkgs, ... }:
-
 {
+  config,
+  pkgs,
+  ...
+}: {
   # FIXME define user info in a central location
   home.username = "matt";
   home.homeDirectory = "/home/matt";

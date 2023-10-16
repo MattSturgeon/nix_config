@@ -1,8 +1,13 @@
 # System configuration file (instead of /etc/nixos/configuration.nix)
 # See `man 5 configuration.nix` and the NixOS manual (`nixos-help`)
-
-{ inputs, outputs, lib, config, pkgs, ... }: {
-
+{
+  inputs,
+  outputs,
+  lib,
+  config,
+  pkgs,
+  ...
+}: {
   # https://nixos.wiki/wiki/FAQ/When_do_I_update_stateVersion
   system.stateVersion = "22.11";
 
@@ -18,7 +23,7 @@
       description = "Matt Sturgeon";
       initialPassword = "init";
       isNormalUser = true;
-      extraGroups = [ "wheel" "networkmanager" ];
+      extraGroups = ["wheel" "networkmanager"];
     };
   };
 
@@ -34,10 +39,10 @@
   ];
 
   programs.neovim = {
-      enable = true;
-      defaultEditor = true;
-      viAlias = true;
-      vimAlias = true;
+    enable = true;
+    defaultEditor = true;
+    viAlias = true;
+    vimAlias = true;
   };
 
   # Set your time zone.

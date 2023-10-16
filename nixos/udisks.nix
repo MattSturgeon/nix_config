@@ -1,7 +1,9 @@
-{ config, pkgs, ... }: {
-
-    services.udisks2 = {
-        enable = true;
-    };
-    
+{
+  config,
+  pkgs,
+  ...
+}: {
+  services.udisks2 = {
+    enable = true;
+  };
 }
