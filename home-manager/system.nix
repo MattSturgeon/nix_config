@@ -3,8 +3,12 @@
   pkgs,
   ...
 }: {
-  home.packages = with pkgs; [
-    tree
-    wl-clipboard # Manage clipboard from the CLI
-  ];
+  options = {};
+
+  config = {
+    home.packages = with pkgs; [
+      tree
+      wl-clipboard # Manage clipboard from the CLI
+    ];
+  };
 }

@@ -3,10 +3,14 @@
   pkg,
   ...
 }: {
-  programs.zellij = {
-    enable = true;
-    settings = {
-      copy_command = "wl-copy";
+  options = {};
+
+  config = {
+    programs.zellij = {
+      enable = true;
+      settings = {
+        copy_command = "wl-copy";
+      };
     };
   };
 }

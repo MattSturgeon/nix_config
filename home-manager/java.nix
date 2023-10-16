@@ -3,8 +3,12 @@
   pkgs,
   ...
 }: {
-  programs.java = {
-    enable = true;
-    package = pkgs.jdk17;
+  options = {};
+
+  config = {
+    programs.java = {
+      enable = true;
+      package = pkgs.jdk17;
+    };
   };
 }

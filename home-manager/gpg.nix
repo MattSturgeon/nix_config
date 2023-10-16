@@ -9,21 +9,25 @@
   d = 24 * h;
   y = 365 * d;
 in {
-  programs.gpg = {
-    enable = true;
-    settings = {
-      default-key = "7082 22EA 1808 E39A 83AC  8B18 4F91 844C ED1A 8299";
-    };
-  };
+  options = {};
 
-  services.gpg-agent = {
-    enable = true;
-    enableSshSupport = true;
-    defaultCacheTtl = 8 * h;
-    defaultCacheTtlSsh = 8 * h;
-    maxCacheTtl = 128 * y;
-    maxCacheTtlSsh = 128 * y;
-    pinentryFlavor = "gnome3";
-    grabKeyboardAndMouse = true;
+  config = {
+    programs.gpg = {
+      enable = true;
+      settings = {
+        default-key = "7082 22EA 1808 E39A 83AC  8B18 4F91 844C ED1A 8299";
+      };
+    };
+
+    services.gpg-agent = {
+      enable = true;
+      enableSshSupport = true;
+      defaultCacheTtl = 8 * h;
+      defaultCacheTtlSsh = 8 * h;
+      maxCacheTtl = 128 * y;
+      maxCacheTtlSsh = 128 * y;
+      pinentryFlavor = "gnome3";
+      grabKeyboardAndMouse = true;
+    };
   };
 }
