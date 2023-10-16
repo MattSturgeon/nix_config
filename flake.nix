@@ -24,6 +24,10 @@
   }@inputs:
     let
       inherit (self) outputs;
+
+      # Format using alejandra
+      formatter = "alejandra";
+
       forAllSystems = nixpkgs.lib.genAttrs [
         "aarch64-linux"
         "i686-linux"
@@ -57,6 +61,11 @@
       inherit overlays;
       legacyPackages = pkgs;
       lib = lib.me;
+
+      # Define the formatter used by `nix fmt`
+      formatter = forAllSystems (system:
+        nixpkgs.legacyPackages.${system}.${formatter}
+      );
 
       # Devshell for bootstrapping
       # Acessible through `nix develop` or `nix-shell` (legacy)
