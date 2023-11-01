@@ -4,6 +4,8 @@
   inputs = {
     nixpkgs.url = "github:nixos/nixpkgs/nixos-unstable";
 
+    nixos-hardware.url = "github:nixos/nixos-hardware/master";
+
     home-manager = {
       url = "github:nix-community/home-manager/master";
       inputs.nixpkgs.follows = "nixpkgs";
@@ -17,6 +19,7 @@
   outputs = {
     self,
     nixpkgs,
+    nixos-hardware,
     home-manager,
     nixvim,
     nixgl,
@@ -98,6 +101,15 @@
           # Main nixos configuration file
           ./nixos/configuration.nix
           ./hardware-config/matts-laptop.nix
+
+          # Hardware
+          nixos-hardware.nixosModules.common-cpu-intel
+          nixos-hardware.nixosModules.common-cpu-intel-kaby-lake
+	  # Disable MX150 for now... Maybe forever (better battery)?
+	  # intelBusId = "PCI:0:2:0"; nvidiaBusId = "PCI:1:0:0";
+          nixos-hardware.nixosModules.common-gpu-nvidia-disable
+          nixos-hardware.nixosModules.common-pc-laptop-ssd
+          nixos-hardware.nixosModules.common-hidpi
 
           home-manager.nixosModules.home-manager
           {
